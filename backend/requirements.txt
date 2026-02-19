@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+sqlalchemy
+mysql-connector-python
+python-dotenv
+pydantic
+openpyxl
+aiofiles
+python-multipart
+bcrypt==4.0.1
+pydantic[email]
+python-jose[cryptography]
+python-dotenv

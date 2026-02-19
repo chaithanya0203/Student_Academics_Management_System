@@ -1,0 +1,122 @@
+/* src/styles/dashboard-faculty.css */
+
+.faculty-dashboard {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+}
+
+.faculty-content {
+  flex: 1;
+  padding: 2rem;
+  margin-left: 280px;
+  transition: var(--transition);
+}
+
+.faculty-container {
+  /* Inherits card styles */
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Sidebar Styles (Embedded for simplicity or can be separate) */
+.sidebar-faculty {
+  width: 280px;
+  background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  box-shadow: var(--shadow-lg);
+  z-index: 1000;
+}
+
+.sidebar-faculty h2 {
+  padding: 2rem 1.5rem;
+  margin: 0;
+  font-size: 1.5rem;
+  color: white;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-faculty nav {
+  flex: 1;
+  padding: 1.5rem 1rem;
+}
+
+.sidebar-faculty ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar-faculty li button {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: #cbd5e1;
+  padding: 0.875rem 1rem;
+  border-radius: var(--radius-md);
+  transition: var(--transition);
+}
+
+.sidebar-faculty li button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  transform: translateX(4px);
+}
+
+/* Faculty Form */
+.faculty-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 2rem;
+  border: 1px solid #e2e8f0;
+}
+
+.faculty-form button {
+  height: fit-content;
+  align-self: end;
+}
+
+/* Faculty Profile specific */
+.faculty-profile {
+  list-style: none;
+  padding: 0;
+}
+
+.faculty-profile li {
+  padding: 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: space-between;
+}
+
+.faculty-profile li:last-child {
+  border-bottom: none;
+}
+
+.faculty-profile strong {
+  color: var(--text-secondary);
+}

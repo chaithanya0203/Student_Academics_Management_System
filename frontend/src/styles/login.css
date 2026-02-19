@@ -1,0 +1,153 @@
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.login-page {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+/* Top Title Section */
+.top-text {
+  position: absolute;
+  top: 40px;
+  left: 60px;
+}
+
+.top-text h1 {
+  font-size: 48px;
+  margin: 0;
+  font-weight: bold;
+  color: black;
+}
+
+.top-text h3 {
+  font-size: 28px;
+  margin-top: 1px;
+  font-weight: 500;
+  color: white;
+}
+
+/* New "LOGIN TO DASHBOARD" heading */
+.login-header {
+  position: absolute;
+  top: 310px;
+  left: 20%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 26px;
+  font-weight: 600;
+  text-shadow: 1px 1px 4px #000000;
+  font-family: "Segoe UI", sans-serif;
+  letter-spacing: 1px;
+}
+
+/* Login container wrapper */
+.login-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 20%;
+  transform: translate(-50%, -50%);
+}
+
+/* Outer box that contains left and right boxes */
+.login-box-outer {
+  display: flex;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 14px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  width: 580px;
+}
+
+/* Left role selection box */
+.left-box {
+  background: #f0f0f0;
+  padding: 30px 20px;
+  width: 40%;
+  border-right: 1px solid #ccc;
+  text-align: center;
+}
+
+.left-box h2 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.left-box select {
+  width: 90%;
+  padding: 8px;
+  margin-top: 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  border: 1px solid #aaa;
+  transition: box-shadow 0.3s ease;
+}
+
+.left-box select:focus {
+  outline: none;
+  box-shadow: 0 0 6px #007bff;
+}
+
+/* Right login form box */
+.right-box {
+  padding: 30px;
+  width: 60%;
+  text-align: center;
+}
+
+.right-box h3 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.right-box form input {
+  width: 100%;
+  margin: 10px 0;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.right-box form button {
+  width: 100%;
+  padding: 8px;
+  margin-top: 12px;
+  background-color: #007bff;
+  color: white;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.right-box form button:hover {
+  background-color: #0056b3;
+  transform: scale(1.02);
+}
+
+/* Fade-in animation when right-box appears */
+.fade-in {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

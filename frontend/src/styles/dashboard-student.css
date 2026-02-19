@@ -1,0 +1,104 @@
+/* src/styles/dashboard-student.css */
+
+.student-dashboard {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+}
+
+.student-content {
+  flex: 1;
+  padding: 2rem;
+  margin-left: 280px;
+  transition: var(--transition);
+}
+
+.student-container {
+  /* Inherits card styles */
+  animation: slideUp 0.4s ease-out;
+}
+
+/* Sidebar for Student */
+.sidebar-student {
+  width: 280px;
+  background: linear-gradient(180deg, #4f46e5 0%, #4338ca 100%);
+  /* Primary color theme */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  box-shadow: var(--shadow-lg);
+  z-index: 1000;
+}
+
+.sidebar-student h2 {
+  padding: 2rem 1.5rem;
+  margin: 0;
+  font-size: 1.5rem;
+  color: white;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-student nav {
+  flex: 1;
+  padding: 1.5rem 1rem;
+}
+
+.sidebar-student ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar-student li button {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: #e0e7ff;
+  padding: 0.875rem 1rem;
+  border-radius: var(--radius-md);
+  transition: var(--transition);
+}
+
+.sidebar-student li button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  transform: translateX(4px);
+}
+
+/* Stats Cards for Student */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  border: 1px solid #e2e8f0;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin: 0.5rem 0;
+}
+
+.stat-label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
