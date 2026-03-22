@@ -14,6 +14,7 @@ import AttendanceRecords from "./AttendanceRecords";
 import EmailAlert from "./EmailAlert";
 import UserCredentials from "./UserCredentials";
 import "../../styles/dashboard-admin.css";
+import DashboardLayout from "../common/DashboardLayout";
 
 export default function AdminDashboard() {
   const [view, setView] = useState("home"); // Default to Home
@@ -34,9 +35,19 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="admin-dashboard">
-      <SidebarAdmin setComponent={setView} />
+    <DashboardLayout
+      title="Administration Hub"
+      subtitle="Manage records, mappings, alerts, and credentials from a single control center."
+      sidebar={({ isSidebarOpen, closeSidebar }) => (
+        <SidebarAdmin
+          activeItem={view}
+          setComponent={setView}
+          isOpen={isSidebarOpen}
+          closeSidebar={closeSidebar}
+        />
+      )}
+    >
       <div className="admin-content">{components[view]}</div>
-    </div>
+    </DashboardLayout>
   );
 }

@@ -1,64 +1,61 @@
-// src/components/Faculty/SidebarFaculty.jsx
-import { CalendarCheck, FileText, User, LogOut } from "lucide-react";
-import "../../styles/dashboard-faculty.css";
+import { CalendarCheck, FileText, GraduationCap, LogOut, User } from "lucide-react";
 
-export default function SidebarFaculty({ setComponent }) {
-  const items = [
-    { label: "Attendance Records", key: "attendance", icon: <CalendarCheck size={20} /> },
-    { label: "Marks Records", key: "marks", icon: <FileText size={20} /> },
-    { label: "My Profile", key: "profile", icon: <User size={20} /> },
-  ];
+const items = [
+  { label: "Attendance Records", key: "attendance", icon: CalendarCheck },
+  { label: "Marks Records", key: "marks", icon: FileText },
+  { label: "My Profile", key: "profile", icon: User },
+];
+
+export default function SidebarFaculty({ activeItem, setComponent, isOpen, closeSidebar }) {
+  const handleSelect = (key) => {
+    setComponent(key);
+    closeSidebar();
+  };
 
   return (
-    <div className="sidebar-faculty">
-      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "2rem 1.5rem", background: "rgba(0,0,0,0.1)" }}>
-        <div style={{ width: "32px", height: "32px", background: "rgba(255,255,255,0.2)", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontWeight: "bold" }}>F</div>
-        <h2 style={{ fontSize: "1.25rem", margin: 0, padding: 0, border: "none", background: "transparent" }}>Faculty Panel</h2>
+    <aside className={`dashboard-sidebar ${isOpen ? "is-open" : ""}`}>
+      <div className="dashboard-sidebar__brand">
+        <div className="dashboard-sidebar__logo">
+          <GraduationCap size={20} />
+        </div>
+        <div>
+          <div className="dashboard-sidebar__title">Faculty Workspace</div>
+          <div className="dashboard-sidebar__subtitle">Teaching Operations</div>
+        </div>
       </div>
 
-      <nav>
-        <ul>
-          {items.map((item) => (
-            <li key={item.key}>
-              <button
-                onClick={() => setComponent(item.key)}
-                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
-              >
-                {item.icon}
-                <span>{item.label}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
+      <nav className="dashboard-sidebar__nav">
+        {items.map((item) => {
+          const Icon = item.icon;
+          const isActive = activeItem === item.key;
+
+          return (
+            <button
+              key={item.key}
+              type="button"
+              onClick={() => handleSelect(item.key)}
+              className={`nav-button ${isActive ? "is-active" : ""}`}
+            >
+              <Icon size={18} />
+              <span>{item.label}</span>
+            </button>
+          );
+        })}
       </nav>
 
-      <div style={{ marginTop: "auto", padding: "1.5rem", borderTop: "1px solid rgba(255,255,255,0.1)", background: "rgba(0,0,0,0.1)" }}>
+      <div className="dashboard-sidebar__footer">
         <button
+          type="button"
+          className="btn-danger"
           onClick={() => {
             localStorage.removeItem("token");
             window.location.href = "/";
           }}
-          style={{
-            width: "100%",
-            padding: "0.75rem",
-            background: "rgba(239, 68, 68, 0.1)",
-            color: "#fca5a5",
-            border: "1px solid rgba(239, 68, 68, 0.2)",
-            borderRadius: "0.5rem",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "0.5rem",
-            transition: "all 0.2s"
-          }}
-          onMouseOver={(e) => { e.currentTarget.style.background = "#ef4444"; e.currentTarget.style.color = "white"; }}
-          onMouseOut={(e) => { e.currentTarget.style.background = "rgba(239, 68, 68, 0.1)"; e.currentTarget.style.color = "#fca5a5"; }}
         >
           <LogOut size={18} />
-          <span>Logout</span>
+          Sign out
         </button>
       </div>
-    </div>
+    </aside>
   );
 }

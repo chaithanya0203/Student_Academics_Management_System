@@ -1,108 +1,146 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Eye, EyeOff, Mail, ShieldCheck, User, Users } from "lucide-react";
 import api from "../services/api";
-import bg from "../assets/background.jpg";
-import "../styles/login.css"; // Reuse login styles
+import AuthLayout from "../components/common/AuthLayout";
 
-const SignupPage = () => {
-    const [role, setRole] = useState("student");
-    const [userId, setUserId] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
-    const navigate = useNavigate();
+const roleOptions = [
+  { value: "student", label: "Student", icon: User, hint: "Request your portal access" },
+  { value: "faculty", label: "Faculty", icon: Users, hint: "Activate academic tools" },
+];
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            await api.post("/auth/signup", {
-                role,
-                user_id: userId,
-                email,
-                password
-            });
-            alert("Signup successful! Please login.");
-            navigate("/");
-        } catch (err) {
-            alert("Signup failed: " + (err.response?.data?.detail || "Unknown error"));
-        }
-    };
+export default function SignupPage() {
+  const [role, setRole] = useState("student");
+  const [userId, setUserId] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
 
-    return (
-        <div
-            className="login-page"
-            style={{
-                backgroundImage: `url(${bg})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                minHeight: "100vh",
-            }}
-        >
-            <div className="login-box-outer" style={{ maxWidth: "450px", margin: "auto", position: "relative", top: "80px" }}>
-                <div className="right-box" style={{ width: "100%", padding: "2rem" }}>
-                    <h3>First Time User? Sign Up</h3>
-                    <form onSubmit={handleSubmit}>
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setError("");
+    setSuccess("");
 
-                        <div style={{ marginBottom: "1rem" }}>
-                            <label style={{ display: "block", marginBottom: "0.5rem" }}>I am a:</label>
-                            <select
-                                value={role}
-                                onChange={(e) => setRole(e.target.value)}
-                                style={{ width: "100%", padding: "0.5rem" }}
-                            >
-                                <option value="student">Student</option>
-                                <option value="faculty">Faculty</option>
-                            </select>
-                        </div>
+    try {
+      await api.post("/auth/signup", {
+        role,
+        user_id: userId,
+        email,
+        password,
+      });
 
-                        <input
-                            type="text"
-                            placeholder={role === 'student' ? "Student ID (e.g. 100101)" : "Faculty ID (e.g. 101)"}
-                            value={userId}
-                            onChange={(e) => setUserId(e.target.value)}
-                            required
-                        />
-                        <input
-                            type="email"
-                            placeholder="Email (Must match records)"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                        <div style={{ position: "relative" }}>
-                            <input
-                                type={showPassword ? "text" : "password"}
-                                placeholder="Create Password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                                style={{ width: "100%" }}
-                            />
-                            <span
-                                onClick={() => setShowPassword(!showPassword)}
-                                style={{
-                                    position: "absolute",
-                                    right: "10px",
-                                    top: "50%",
-                                    transform: "translateY(-50%)",
-                                    cursor: "pointer",
-                                    fontSize: "1.2rem",
-                                }}
-                                role="img"
-                                aria-label="toggle password visibility"
-                            >
-                                {showPassword ? "👁️" : "🙈"}
-                            </span>
-                        </div>
-                        <button type="submit">Sign Up</button>
-                    </form>
-                    <div style={{ marginTop: "1rem", textAlign: "center" }}>
-                        <Link to="/" style={{ color: "#333", textDecoration: "none" }}>Already have an account? Login</Link>
-                    </div>
-                </div>
-            </div>
+      setSuccess("Signup successful. Redirecting to login...");
+      setTimeout(() => navigate("/"), 1200);
+    } catch (err) {
+      setError(err.response?.data?.detail || "Signup failed. Please verify your details.");
+    }
+  };
+
+  return (
+    <AuthLayout
+      eyebrow="New account"
+      title="Request portal access"
+      description="Create your first-time access using the role and institutional details already registered in the system."
+      heroTitle="Bring every academic journey into one trusted interface."
+      heroDescription="From onboarding to ongoing access, the portal should feel as reliable and polished as the institution behind it."
+    >
+      <form onSubmit={handleSubmit} className="form-section form-grid">
+        <div>
+          <label className="field-label">I am registering as</label>
+          <div className="role-grid">
+            {roleOptions.map((option) => {
+              const Icon = option.icon;
+              const isActive = role === option.value;
+
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  className={`role-button ${isActive ? "is-active" : ""}`}
+                  onClick={() => setRole(option.value)}
+                >
+                  <Icon size={20} />
+                  <span className="role-button__label">{option.label}</span>
+                  <span className="role-button__hint">{option.hint}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
-    );
-};
 
-export default SignupPage;
+        <div>
+          <label className="field-label" htmlFor="signup-user-id">
+            User ID
+          </label>
+          <div className="input-icon-wrap">
+            <ShieldCheck size={18} />
+            <input
+              id="signup-user-id"
+              type="text"
+              required
+              value={userId}
+              onChange={(event) => setUserId(event.target.value)}
+              placeholder={role === "student" ? "Student ID" : "Faculty ID"}
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="field-label" htmlFor="signup-email">
+            Registered email
+          </label>
+          <div className="input-icon-wrap">
+            <Mail size={18} />
+            <input
+              id="signup-email"
+              type="email"
+              required
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="Enter your registered email"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="field-label" htmlFor="signup-password">
+            Create password
+          </label>
+          <div className="input-icon-wrap">
+            <input
+              id="signup-password"
+              type={showPassword ? "text" : "password"}
+              required
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="Create a strong password"
+            />
+            <button
+              type="button"
+              className="input-action"
+              onClick={() => setShowPassword((visible) => !visible)}
+              aria-label="Toggle password visibility"
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
+        </div>
+
+        {error ? <div className="message-banner">{error}</div> : null}
+        {success ? <div className="success-message">{success}</div> : null}
+
+        <div className="form-row form-row--stack">
+          <Link className="button-link" to="/">
+            Back to login
+          </Link>
+          <button type="submit" className="btn-primary">
+            Create access
+          </button>
+        </div>
+      </form>
+    </AuthLayout>
+  );
+}

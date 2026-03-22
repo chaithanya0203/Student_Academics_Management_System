@@ -9,16 +9,18 @@ import SignupPage from "./pages/SignupPage";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/admin" element={<AdminPage />} />
-        <Route path="/faculty" element={<FacultyPage />} />
-        <Route path="/student" element={<StudentPage />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/signup" element={<SignupPage />} />
-      </Routes>
-    </Router>
+    <div className="app-shell">
+      <Router>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/faculty" element={<FacultyPage />} />
+          <Route path="/student" element={<StudentPage />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/signup" element={<SignupPage />} />
+        </Routes>
+      </Router>
+    </div>
   );
 }
 

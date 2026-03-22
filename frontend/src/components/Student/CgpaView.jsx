@@ -14,9 +14,13 @@ export default function CgpaView() {
   return (
     <div className="student-container">
       <h2>My CGPA</h2>
-      <p style={{ fontSize: "24px", fontWeight: "bold" }}>
-        {cgpa !== null ? `CGPA: ${cgpa}` : "Loading..."}
-      </p>
+      <div className="stats-grid">
+        <div className="stat-card">
+          <span className="stat-label">Current Academic Score</span>
+          <div className="stat-value">{cgpa !== null ? cgpa : "--"}</div>
+          <p>{cgpa !== null ? "Your cumulative grade point average is up to date." : "Loading your latest CGPA..."}</p>
+        </div>
+      </div>
     </div>
   );
 }

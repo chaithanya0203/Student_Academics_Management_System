@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import api from "../../services/api";
 
 export default function FacultyInfo() {
+  const [profile, setProfile] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -19,7 +20,7 @@ export default function FacultyInfo() {
   }, []);
 
   if (error) return <div className="error-message">{error}</div>;
-  if (!profile) return <p>Loading profile...</p>;
+  if (!profile) return <div className="faculty-container"><p>Loading profile...</p></div>;
 
   return (
     <div className="faculty-container">
