@@ -1,34 +1,45 @@
+import os
+
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import Base, engine
 from app.routers import (
     admin_info,
-    auth,
-    faculty_info,
-    student_info,
-    section,
-    email_alerts,
-    course_catalog,
-    faculty_course_map,
-    student_course_map,
-    marks_records,
     attendance_records,
+    auth,
+    course_catalog,
+    email_alerts,
+    faculty_course_map,
+    faculty_info,
+    marks_records,
+    section,
     section_course_map,
-    user_credentials,
-    section_course_map,
-    user_credentials,
     stats,
+    student_course_map,
+    student_info,
+    user_credentials,
 )
+
+load_dotenv()
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Student Academics Management System")
 
-origins = ["*"]
+cors_origins_raw = os.getenv(
+    "CORS_ORIGINS",
+    "http://localhost:5173,http://127.0.0.1:5173",
+)
+origins = [origin.strip() for origin in cors_origins_raw.split(",") if origin.strip()]
+
 app.add_middleware(
-    CORSMiddleware, allow_origins=origins, allow_credentials=True,
-    allow_methods=["*"], allow_headers=["*"]
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(admin_info.router)

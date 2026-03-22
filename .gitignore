@@ -1,1 +1,3 @@
 passwords.txt
+backend/.env
+frontend/.env

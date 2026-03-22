@@ -1,21 +1,26 @@
+import os
+
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import declarative_base, sessionmaker
 
-# Direct MySQL connection details
-DATABASE_URL = "mysql+mysqlconnector://root:Naruto$555@localhost:3306/hms"
-print(f"Connecting to DB: {DATABASE_URL}")
+load_dotenv()
 
-# SQLAlchemy engine
-engine = create_engine(
-    DATABASE_URL,
-    connect_args={"connect_timeout": 5}
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "mysql+mysqlconnector://root:password@localhost:3306/hms",
 )
 
-# Session and base
+engine = create_engine(
+    DATABASE_URL,
+    pool_pre_ping=True,
+    connect_args={"connect_timeout": 10},
+)
+
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
-# Database session dependency
+
 def get_db():
     db = SessionLocal()
     try:
