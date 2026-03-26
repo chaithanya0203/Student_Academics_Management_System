@@ -1,7 +1,6 @@
 // src/components/admin/UserCredentials.jsx
 import { useEffect, useState } from "react";
 import api from "../../services/api";
-import "../../styles/dashboard-admin.css";
 
 export default function UserCredentials() {
   const [users, setUsers] = useState([]);
@@ -11,10 +10,17 @@ export default function UserCredentials() {
     role: "student",
   });
   const [editMode, setEditMode] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const loadUsers = async () => {
-    const res = await api.get("/user_credentials/");
-    setUsers(res.data);
+    try {
+      setError("");
+      const res = await api.get("/user_credentials/");
+      setUsers(res.data);
+    } catch (err) {
+      setError(err.response?.data?.detail || "Failed to load credentials.");
+    }
   };
 
   useEffect(() => {
@@ -28,6 +34,8 @@ export default function UserCredentials() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setError("");
+      setSuccess("");
       if (editMode) {
         await api.put(`/user_credentials/${formData.user_id}`, formData);
       } else {
@@ -35,9 +43,10 @@ export default function UserCredentials() {
       }
       setFormData({ user_id: "", password: "", role: "student" });
       setEditMode(false);
+      setSuccess(`Credentials ${editMode ? "updated" : "created"} successfully.`);
       loadUsers();
-    } catch {
-      alert("Failed to save credentials.");
+    } catch (err) {
+      setError(err.response?.data?.detail || "Failed to save credentials.");
     }
   };
 
@@ -48,14 +57,26 @@ export default function UserCredentials() {
 
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure?")) {
-      await api.delete(`/user_credentials/${id}`);
-      loadUsers();
+      try {
+        setError("");
+        setSuccess("");
+        await api.delete(`/user_credentials/${id}`);
+        setSuccess("Credentials deleted successfully.");
+        loadUsers();
+      } catch (err) {
+        setError(err.response?.data?.detail || "Failed to delete credentials.");
+      }
     }
   };
 
   return (
     <div className="admin-container">
       <h2 className="section-title">User Credentials</h2>
+      <p>
+        Create credentials only after the matching student, faculty, or admin profile already exists.
+      </p>
+      {error ? <div className="error-message">{error}</div> : null}
+      {success ? <div className="success-message">{success}</div> : null}
       <form onSubmit={handleSubmit} className="admin-form">
         <input
           name="user_id"

@@ -1,7 +1,6 @@
 // src/components/Faculty/MarksRecords.jsx
 import { useState, useEffect } from "react";
 import api from "../../services/api";
-import "../../styles/dashboard-faculty.css";
 
 export default function MarksRecords() {
   const [records, setRecords] = useState([]);
@@ -17,14 +16,20 @@ export default function MarksRecords() {
   const [editId, setEditId] = useState(null);
   const [sectionId, setSectionId] = useState("");
   const [courseId, setCourseId] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const fetchData = async () => {
-    if (!sectionId || !courseId) return;
     try {
-      const res = await api.get(`/marks/?section_id=${sectionId}&course_id=${courseId}`);
+      setError("");
+      const params = new URLSearchParams();
+      if (sectionId) params.set("section_id", sectionId);
+      if (courseId) params.set("course_id", courseId);
+      const query = params.toString();
+      const res = await api.get(`/marks/${query ? `?${query}` : ""}`);
       setRecords(res.data);
-    } catch {
-      alert("Failed to fetch marks.");
+    } catch (err) {
+      setError(err.response?.data?.detail || "Failed to fetch marks.");
     }
   };
 
@@ -39,6 +44,8 @@ export default function MarksRecords() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setError("");
+      setSuccess("");
       // Validation
       if (
         (parseInt(form.ca1) > 20) ||
@@ -53,7 +60,8 @@ export default function MarksRecords() {
       if (editId) {
         await api.put(`/marks/${editId}`, form);
       } else {
-        await api.post("/marks/", form);
+        const res = await api.post("/marks/", form);
+        setRecords((prev) => [res.data, ...prev]);
       }
       setForm({
         student_id: "",
@@ -65,9 +73,12 @@ export default function MarksRecords() {
         end_term: "",
       });
       setEditId(null);
-      fetchData();
-    } catch {
-      alert("Failed to save marks.");
+      setSuccess(`Marks ${editId ? "updated" : "created"} successfully.`);
+      if (editId || sectionId || courseId) {
+        fetchData();
+      }
+    } catch (err) {
+      setError(err.response?.data?.detail || "Failed to save marks.");
     }
   };
 
@@ -92,6 +103,8 @@ export default function MarksRecords() {
   return (
     <div className="faculty-container">
       <h2 className="section-title">Marks Management</h2>
+      {error ? <div className="error-message">{error}</div> : null}
+      {success ? <div className="success-message">{success}</div> : null}
 
       <div className="filter-bar">
         <input
@@ -106,7 +119,7 @@ export default function MarksRecords() {
           value={courseId}
           onChange={(e) => setCourseId(e.target.value)}
         />
-        <button onClick={fetchData} className="btn-secondary">Load Marks</button>
+        <button type="button" onClick={fetchData} className="btn-secondary">Load Marks</button>
       </div>
 
       <form onSubmit={handleSubmit} className="faculty-form">
@@ -124,13 +137,13 @@ export default function MarksRecords() {
       <table className="faculty-table">
         <thead>
           <tr>
-            <th>ID</th><th>Student</th><th>Course</th><th>CA1</th><th>CA2</th><th>Mid</th><th>End</th><th>Actions</th>
+            <th>No.</th><th>Student</th><th>Course</th><th>CA1</th><th>CA2</th><th>Mid</th><th>End</th><th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {records.map((r) => (
+          {records.map((r, index) => (
             <tr key={r.id}>
-              <td>{r.id}</td>
+              <td>{index + 1}</td>
               <td>{r.student_id}</td>
               <td>{r.course_id}</td>
               <td>{r.ca1}</td>
@@ -138,7 +151,7 @@ export default function MarksRecords() {
               <td>{r.mid_term}</td>
               <td>{r.end_term}</td>
               <td>
-                <button className="btn-secondary" onClick={() => startEdit(r)}>Edit</button>
+                <button type="button" className="btn-secondary" onClick={() => startEdit(r)}>Edit</button>
               </td>
             </tr>
           ))}

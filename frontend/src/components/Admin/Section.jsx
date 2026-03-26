@@ -1,7 +1,6 @@
 // src/components/admin/Section.jsx
 import { useEffect, useState } from "react";
 import api from "../../services/api";
-import "../../styles/dashboard-admin.css";
 
 export default function Section() {
   const [sections, setSections] = useState([]);

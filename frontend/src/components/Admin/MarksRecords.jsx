@@ -1,7 +1,6 @@
 // src/components/admin/MarksRecords.jsx
 import { useEffect, useState } from "react";
 import api from "../../services/api";
-import "../../styles/dashboard-admin.css";
 
 export default function MarksRecords() {
   const [marks, setMarks] = useState([]);
@@ -39,7 +38,7 @@ export default function MarksRecords() {
       <table className="admin-table">
         <thead>
           <tr>
-            <th>ID</th>
+            <th>No.</th>
             <th>Student</th>
             <th>Faculty</th>
             <th>Course</th>
@@ -51,9 +50,9 @@ export default function MarksRecords() {
           </tr>
         </thead>
         <tbody>
-          {marks.map((m) => (
+          {marks.map((m, index) => (
             <tr key={m.id}>
-              <td>{m.id}</td>
+              <td>{index + 1}</td>
               <td>{m.student_id}</td>
               <td>{m.faculty_id}</td>
               <td>{m.course_id}</td>

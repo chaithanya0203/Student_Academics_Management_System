@@ -10,7 +10,6 @@ from app.routers import (
     attendance_records,
     auth,
     course_catalog,
-    email_alerts,
     faculty_course_map,
     faculty_info,
     marks_records,
@@ -54,5 +53,4 @@ app.include_router(marks_records.router)
 app.include_router(attendance_records.router)
 app.include_router(user_credentials.router)
 app.include_router(section_course_map.router)
-app.include_router(email_alerts.router)
 app.include_router(stats.router)

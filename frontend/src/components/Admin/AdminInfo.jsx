@@ -1,7 +1,6 @@
 // src/components/admin/AdminInfo.jsx
 import { useEffect, useState } from "react";
 import api from "../../services/api";
-import "../../styles/dashboard-admin.css";
 
 export default function AdminInfo() {
   const [admins, setAdmins] = useState([]);

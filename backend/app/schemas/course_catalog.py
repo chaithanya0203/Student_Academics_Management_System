@@ -1,4 +1,5 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
+
 
 class CourseCreate(BaseModel):
     course_name: str
@@ -9,10 +10,10 @@ class CourseUpdate(BaseModel):
     course_name: str
     credit: int
 
+
 class CourseOut(BaseModel):
     course_id: int
     course_name: str
     credit: int
 
-    class Config:
-        orm_mode = True  # Required for ORM integration
+    model_config = ConfigDict(from_attributes=True)

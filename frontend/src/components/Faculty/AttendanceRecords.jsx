@@ -1,7 +1,6 @@
 // src/components/Faculty/AttendanceRecords.jsx
 import { useState, useEffect } from "react";
 import api from "../../services/api";
-import "../../styles/dashboard-faculty.css";
 
 export default function AttendanceRecords() {
   const [records, setRecords] = useState([]);
@@ -75,18 +74,18 @@ export default function AttendanceRecords() {
 
       <table className="faculty-table">
         <thead>
-          <tr><th>ID</th><th>Student</th><th>Course</th><th>Status</th><th>Date</th><th>Actions</th></tr>
+          <tr><th>No.</th><th>Student</th><th>Course</th><th>Status</th><th>Date</th><th>Actions</th></tr>
         </thead>
         <tbody>
-          {records.map((r) => (
+          {records.map((r, index) => (
             <tr key={r.id}>
-              <td>{r.id}</td>
+              <td>{index + 1}</td>
               <td>{r.student_id}</td>
               <td>{r.course_id}</td>
               <td>{r.status}</td>
               <td>{r.date}</td>
               <td>
-                <button className="btn-secondary" onClick={() => startEdit(r)}>Edit</button>
+                <button type="button" className="btn-secondary" onClick={() => startEdit(r)}>Edit</button>
               </td>
             </tr>
           ))}

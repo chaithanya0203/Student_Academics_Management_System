@@ -1,5 +1,6 @@
-from pydantic import BaseModel, Field
 from typing import Optional
+
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class MarksCreate(BaseModel):
@@ -18,6 +19,7 @@ class MarksUpdate(BaseModel):
     mid_term: Optional[float] = None
     end_term: Optional[float] = None
 
+
 class MarksOut(BaseModel):
     id: int
     student_id: str
@@ -28,5 +30,4 @@ class MarksOut(BaseModel):
     mid_term: int
     end_term: int
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)

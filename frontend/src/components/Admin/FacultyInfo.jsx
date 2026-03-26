@@ -1,7 +1,6 @@
 // src/components/admin/FacultyInfo.jsx
 import { useEffect, useState } from "react";
 import api from "../../services/api";
-import "../../styles/dashboard-admin.css";
 
 export default function FacultyInfo() {
   const [facultyList, setFacultyList] = useState([]);

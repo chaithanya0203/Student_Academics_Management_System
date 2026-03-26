@@ -1,9 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from app.schemas.student_info import StudentCreate, StudentOut, StudentUpdate
 from app.models.student_info import StudentInfo
+from app.models.attendance_records import AttendanceRecords
+from app.models.marks_records import MarksRecords
+from app.models.student_course_map import StudentCourseMap
 from app.models.user_credentials import UserCredentials
-from app.database import get_db
 from app.database import get_db
 from app.dependencies import get_current_active_user
 
@@ -69,8 +72,17 @@ def delete_student(student_id: str, db: Session = Depends(get_db)):
     if not student:
         raise HTTPException(status_code=404, detail="Student not found")
 
-    # Remove credentials too
-    db.query(UserCredentials).filter_by(user_id=student_id).delete()
-    db.delete(student)
-    db.commit()
-    return {"detail": "Student deleted successfully"}
+    try:
+        db.query(AttendanceRecords).filter_by(student_id=student_id).delete(synchronize_session=False)
+        db.query(MarksRecords).filter_by(student_id=student_id).delete(synchronize_session=False)
+        db.query(StudentCourseMap).filter_by(student_id=student_id).delete(synchronize_session=False)
+        db.query(UserCredentials).filter_by(user_id=student_id).delete(synchronize_session=False)
+        db.delete(student)
+        db.commit()
+        return {"detail": "Student deleted successfully"}
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="Cannot delete student because related academic records still exist."
+        )

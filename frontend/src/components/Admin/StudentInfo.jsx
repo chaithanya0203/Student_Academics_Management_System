@@ -1,7 +1,6 @@
 // src/components/Admin/StudentInfo.jsx
 import { useState, useEffect } from "react";
 import api from "../../services/api";
-import "../../styles/dashboard-admin.css";
 
 export default function StudentInfo() {
   const [data, setData] = useState([]);

@@ -1,28 +1,23 @@
 import {
   ArrowUpRight,
-  BookOpen,
   CalendarRange,
-  GraduationCap,
-  Layers,
   Mail,
   ShieldCheck,
   Sparkles,
-  Users,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function DashboardHome() {
-  const stats = [
-    { label: "Total Students", value: "1,240", note: "Enrollment is trending upward this semester.", icon: Users },
-    { label: "Faculty Members", value: "85", note: "Teaching capacity is stable across departments.", icon: GraduationCap },
-    { label: "Active Courses", value: "42", note: "Course catalog is live and synchronized.", icon: BookOpen },
-    { label: "Sections Running", value: "12", note: "All core sections are currently mapped.", icon: Layers },
-  ];
-
   const activity = [
     { label: "Security posture", value: "Strong", detail: "Admin access and credential flows are active.", icon: ShieldCheck },
     { label: "Alerts pipeline", value: "Ready", detail: "Institution-wide notifications can be sent instantly.", icon: Mail },
     { label: "Term operations", value: "On schedule", detail: "Attendance and marks workflows are fully available.", icon: CalendarRange },
+  ];
+
+  const heroHighlights = [
+    { label: "Credential controls", value: "Live" },
+    { label: "Academic records", value: "Healthy" },
+    { label: "Admin workflows", value: "Synced" },
   ];
 
   const quickActions = [
@@ -64,40 +59,15 @@ export default function DashboardHome() {
           <span className="admin-hero__panel-label">Today at a glance</span>
           <div className="admin-hero__panel-value">98.4%</div>
           <p>Operational availability across core academic workflows and dashboard services.</p>
-          <div className="admin-hero__metrics">
-            <div>
-              <strong>312</strong>
-              <span>Recent record updates</span>
-            </div>
-            <div>
-              <strong>08</strong>
-              <span>Pending admin tasks</span>
-            </div>
+          <div className="admin-hero__highlights">
+            {heroHighlights.map((item) => (
+              <div key={item.label} className="admin-hero__highlight">
+                <span>{item.label}</span>
+                <strong>{item.value}</strong>
+              </div>
+            ))}
           </div>
         </div>
-      </motion.section>
-
-      <motion.section
-        className="admin-stats"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1, duration: 0.45 }}
-      >
-        {stats.map((stat) => {
-          const Icon = stat.icon;
-          return (
-            <article key={stat.label} className="admin-stat-card">
-              <div className="admin-stat-card__icon">
-                <Icon size={20} />
-              </div>
-              <div>
-                <span className="admin-stat-card__label">{stat.label}</span>
-                <strong className="admin-stat-card__value">{stat.value}</strong>
-                <p>{stat.note}</p>
-              </div>
-            </article>
-          );
-        })}
       </motion.section>
 
       <section className="admin-panels">

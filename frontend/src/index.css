@@ -6,6 +6,8 @@
 
 :root {
   color-scheme: light;
+  --page-gap: 1rem;
+  --sidebar-width: 16.5rem;
   --bg: #f3f7fb;
   --bg-elevated: rgba(255, 255, 255, 0.82);
   --bg-panel: rgba(255, 255, 255, 0.9);
@@ -67,6 +69,7 @@ html,
 body,
 #root {
   min-height: 100%;
+  width: 100%;
 }
 
 html {
@@ -108,7 +111,7 @@ button {
 .app-shell {
   min-height: 100vh;
   position: relative;
-  overflow-x: clip;
+  overflow-x: hidden;
 }
 
 .app-shell::before,
@@ -555,12 +558,13 @@ textarea:focus {
 .dashboard-shell {
   min-height: 100vh;
   display: flex;
+  width: 100%;
 }
 
 .dashboard-sidebar {
-  width: 18rem;
+  width: var(--sidebar-width);
   position: fixed;
-  inset: 1.25rem auto 1.25rem 1.25rem;
+  inset: var(--page-gap) auto var(--page-gap) var(--page-gap);
   display: flex;
   flex-direction: column;
   padding: 1rem;
@@ -647,8 +651,9 @@ textarea:focus {
 
 .dashboard-main {
   flex: 1;
-  margin-left: 20.5rem;
-  padding: 1.4rem 1.4rem 2rem;
+  margin-left: calc(var(--sidebar-width) + (var(--page-gap) * 2));
+  padding: var(--page-gap) var(--page-gap) 1.5rem;
+  min-width: 0;
 }
 
 .dashboard-topbar {
@@ -783,6 +788,32 @@ textarea:focus {
   margin: 0.55rem 0 0;
   color: rgba(248, 251, 255, 0.8);
   line-height: 1.7;
+}
+
+.admin-hero__highlights {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 1.2rem;
+}
+
+.admin-hero__highlight {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.admin-hero__highlight span {
+  color: rgba(248, 251, 255, 0.78);
+  font-size: 0.85rem;
+}
+
+.admin-hero__highlight strong {
+  font-size: 0.95rem;
 }
 
 .admin-hero__metrics {
@@ -992,7 +1023,9 @@ textarea:focus {
 
 .content-surface {
   min-height: calc(100vh - 7rem);
-  padding: 1.2rem;
+  width: min(100%, 124rem);
+  margin: 0 auto;
+  padding: 1rem;
   border-radius: 2rem;
   background: var(--bg-elevated);
   border: 1px solid var(--border);
@@ -1004,17 +1037,20 @@ textarea:focus {
 .faculty-content,
 .student-content {
   width: 100%;
+  min-width: 0;
 }
 
 .admin-container,
 .student-container,
 .faculty-container {
   width: 100%;
+  max-width: 100%;
   background: var(--bg-panel);
   border: 1px solid var(--border);
   border-radius: 1.7rem;
   padding: 1.5rem;
   box-shadow: var(--shadow-card);
+  overflow-x: auto;
 }
 
 .admin-container h2,
@@ -1053,6 +1089,7 @@ textarea:focus {
 
 table {
   width: 100%;
+  min-width: 42rem;
   border-collapse: separate;
   border-spacing: 0;
   overflow: hidden;
@@ -1093,6 +1130,147 @@ td button + button {
   margin: 0;
   display: grid;
   gap: 0.9rem;
+}
+
+.faculty-profile-page {
+  display: grid;
+  gap: 1rem;
+}
+
+.faculty-profile-hero {
+  padding: 1.4rem;
+  border-radius: 1.7rem;
+  background:
+    radial-gradient(circle at top right, rgba(96, 165, 250, 0.18), transparent 28%),
+    linear-gradient(135deg, rgba(15, 118, 110, 0.16), rgba(37, 99, 235, 0.12)),
+    var(--bg-panel);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+}
+
+.faculty-profile-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 999px;
+  background: var(--secondary-soft);
+  color: var(--secondary);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.faculty-profile-hero__identity {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.faculty-profile-hero__avatar {
+  width: 4.4rem;
+  height: 4.4rem;
+  display: grid;
+  place-items: center;
+  border-radius: 1.35rem;
+  background: var(--bg-accent);
+  color: #f8fbff;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  box-shadow: var(--shadow-glow);
+}
+
+.faculty-profile-hero__identity h2 {
+  margin: 0;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: clamp(1.7rem, 2.6vw, 2.5rem);
+  letter-spacing: -0.04em;
+}
+
+.faculty-profile-hero__identity p {
+  margin: 0.35rem 0 0;
+  color: var(--text-muted);
+}
+
+.faculty-profile-hero__meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+  margin-top: 1.2rem;
+}
+
+.faculty-profile-hero__meta div {
+  padding: 0.95rem 1rem;
+  border-radius: 1rem;
+  background: var(--bg-panel-strong);
+  border: 1px solid var(--border);
+}
+
+.faculty-profile-hero__meta span {
+  display: block;
+  color: var(--text-soft);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.faculty-profile-hero__meta strong {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 1rem;
+}
+
+.faculty-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.faculty-profile-card {
+  padding: 1.2rem;
+  border-radius: 1.35rem;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+}
+
+.faculty-profile-card__icon {
+  width: 2.8rem;
+  height: 2.8rem;
+  display: grid;
+  place-items: center;
+  border-radius: 1rem;
+  background: var(--secondary-soft);
+  color: var(--secondary);
+}
+
+.faculty-profile-card__label {
+  display: block;
+  margin-top: 0.9rem;
+  color: var(--text-soft);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.faculty-profile-card__value {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 1.1rem;
+  color: var(--text);
+  word-break: break-word;
+}
+
+.faculty-profile-summary h3 {
+  margin: 0 0 0.75rem;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: -0.03em;
 }
 
 .faculty-profile li {
@@ -1190,6 +1368,10 @@ td button + button {
     padding-top: 1rem;
   }
 
+  table {
+    min-width: 36rem;
+  }
+
   .admin-hero,
   .admin-panels,
   .admin-stats {
@@ -1243,7 +1425,9 @@ td button + button {
 
   .auth-showcase__stats,
   .role-grid,
-  .stats-grid {
+  .stats-grid,
+  .faculty-profile-grid,
+  .faculty-profile-hero__meta {
     grid-template-columns: 1fr;
   }
 
@@ -1278,5 +1462,9 @@ td button + button {
   tbody td,
   thead th {
     padding: 0.85rem 0.8rem;
+  }
+
+  table {
+    min-width: 32rem;
   }
 }

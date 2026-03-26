@@ -1,7 +1,6 @@
 // src/components/admin/CourseCatalog.jsx
 import { useEffect, useState } from "react";
 import api from "../../services/api";
-import "../../styles/dashboard-admin.css";
 
 export default function CourseCatalog() {
   const [courses, setCourses] = useState([]);

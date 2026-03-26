@@ -1,7 +1,6 @@
 // src/components/admin/AttendanceRecords.jsx
 import { useEffect, useState } from "react";
 import api from "../../services/api";
-import "../../styles/dashboard-admin.css";
 
 export default function AttendanceRecords() {
   const [records, setRecords] = useState([]);
@@ -39,7 +38,7 @@ export default function AttendanceRecords() {
       <table className="admin-table">
         <thead>
           <tr>
-            <th>ID</th>
+            <th>No.</th>
             <th>Student</th>
             <th>Faculty</th>
             <th>Course</th>
@@ -49,9 +48,9 @@ export default function AttendanceRecords() {
           </tr>
         </thead>
         <tbody>
-          {records.map((r) => (
+          {records.map((r, index) => (
             <tr key={r.id}>
-              <td>{r.id}</td>
+              <td>{index + 1}</td>
               <td>{r.student_id}</td>
               <td>{r.faculty_id}</td>
               <td>{r.course_id}</td>

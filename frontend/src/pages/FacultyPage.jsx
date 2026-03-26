@@ -4,7 +4,6 @@ import SidebarFaculty from "../components/Faculty/SidebarFaculty";
 import AttendanceRecords from "../components/Faculty/AttendanceRecords";
 import MarksRecords from "../components/Faculty/MarksRecords";
 import FacultyInfo from "../components/Faculty/FacultyInfo";
-import "../styles/dashboard-faculty.css";
 import DashboardLayout from "../components/common/DashboardLayout";
 
 export default function FacultyPage() {

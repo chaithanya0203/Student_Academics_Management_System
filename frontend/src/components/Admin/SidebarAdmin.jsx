@@ -5,7 +5,6 @@ import {
   Layers,
   LayoutDashboard,
   LogOut,
-  Mail,
   Map,
   Network,
   ShieldCheck,
@@ -26,7 +25,6 @@ const items = [
   { label: "Section-Course", key: "sectionCourseMap", icon: Map },
   { label: "Marks", key: "marks", icon: Trash2 },
   { label: "Attendance", key: "attendance", icon: Trash2 },
-  { label: "Email Alert", key: "emailAlert", icon: Mail },
   { label: "Credentials", key: "userCredentials", icon: Key },
 ];
 

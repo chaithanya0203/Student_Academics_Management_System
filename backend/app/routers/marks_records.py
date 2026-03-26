@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.marks_records import MarksRecords
+from app.models.student_info import StudentInfo
 from app.schemas.marks_records import MarksCreate, MarksOut, MarksUpdate
 from app.utils.cgpa_calculator import compute_cgpa
 from app.dependencies import get_current_active_user
@@ -33,13 +34,19 @@ from typing import Optional
 def get_marks_by_section_course(
     section_id: Optional[str] = None, 
     course_id: Optional[str] = None, 
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_active_user(["faculty", "admin"]))
 ):
     query = db.query(MarksRecords)
+
+    if current_user["role"] == "faculty":
+        query = query.filter(MarksRecords.faculty_id == current_user["sub"])
+
     if section_id:
-        query = query.filter(MarksRecords.section_id == section_id)
+        query = query.join(StudentInfo, StudentInfo.student_id == MarksRecords.student_id)
+        query = query.filter(StudentInfo.section_id == int(section_id))
     if course_id:
-        query = query.filter(MarksRecords.course_id == course_id)
+        query = query.filter(MarksRecords.course_id == int(course_id))
     return query.all()
 
 # PUT: Update marks (Faculty only)

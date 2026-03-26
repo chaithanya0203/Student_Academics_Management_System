@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 class UserCredentialsBase(BaseModel):
     user_id: str
@@ -12,5 +12,4 @@ class UserCredentialsOut(BaseModel):
     user_id: str
     role: str
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)

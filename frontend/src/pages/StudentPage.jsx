@@ -4,7 +4,6 @@ import SidebarStudent from "../components/Student/SidebarStudent";
 import AttendanceView from "../components/Student/AttendanceView";
 import MarksView from "../components/Student/MarksView";
 import CgpaView from "../components/Student/CgpaView";
-import "../styles/dashboard-student.css";
 import DashboardLayout from "../components/common/DashboardLayout";
 
 export default function StudentPage() {

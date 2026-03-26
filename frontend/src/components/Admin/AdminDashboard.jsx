@@ -11,9 +11,7 @@ import FacultyCourseMap from "./FacultyCourseMap";
 import SectionCourseMap from "./SectionCourseMap";
 import MarksRecords from "./MarksRecords";
 import AttendanceRecords from "./AttendanceRecords";
-import EmailAlert from "./EmailAlert";
 import UserCredentials from "./UserCredentials";
-import "../../styles/dashboard-admin.css";
 import DashboardLayout from "../common/DashboardLayout";
 
 export default function AdminDashboard() {
@@ -30,7 +28,6 @@ export default function AdminDashboard() {
     sectionCourseMap: <SectionCourseMap />,
     marks: <MarksRecords />,
     attendance: <AttendanceRecords />,
-    emailAlert: <EmailAlert />,
     userCredentials: <UserCredentials />,
   };
 

@@ -1,7 +1,6 @@
 // src/components/admin/SectionCourseMap.jsx
 import { useEffect, useState } from "react";
 import api from "../../services/api";
-import "../../styles/dashboard-admin.css";
 
 export default function SectionCourseMap() {
   const [mappings, setMappings] = useState([]);
@@ -101,23 +100,23 @@ export default function SectionCourseMap() {
       <table className="admin-table">
         <thead>
           <tr>
-            <th>ID</th>
+            <th>No.</th>
             <th>Section ID</th>
             <th>Course ID</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {mappings.map((map) => (
+          {mappings.map((map, index) => (
             <tr key={map.id}>
-              <td>{map.id}</td>
+              <td>{index + 1}</td>
               <td>{map.section_id}</td>
               <td>{map.course_id}</td>
               <td>
-                <button className="btn-secondary" onClick={() => handleEdit(map)}>
+                <button type="button" className="btn-secondary" onClick={() => handleEdit(map)}>
                   Edit
                 </button>
-                <button className="btn-danger" onClick={() => handleDelete(map.id)}>
+                <button type="button" className="btn-danger" onClick={() => handleDelete(map.id)}>
                   Delete
                 </button>
               </td>

@@ -1,9 +1,12 @@
-from fastapi import APIRouter, Depends, HTTPException # type: ignore
+from fastapi import APIRouter, Depends, HTTPException  # type: ignore
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from app.schemas.faculty_info import FacultyCreate, FacultyOut, FacultyUpdate
 from app.models.faculty_info import FacultyInfo
+from app.models.attendance_records import AttendanceRecords
+from app.models.marks_records import MarksRecords
+from app.models.faculty_course_map import FacultyCourseMap
 from app.models.user_credentials import UserCredentials
-from app.database import get_db
 from app.database import get_db
 from app.dependencies import get_current_active_user
 
@@ -11,8 +14,8 @@ router = APIRouter(prefix="/faculty", tags=["Faculty"])
 
 # GET: Current Faculty Profile
 @router.get("/me", response_model=FacultyOut)
-def read_users_me(current_user: UserCredentials = Depends(get_current_active_user("faculty")), db: Session = Depends(get_db)):
-    faculty = db.query(FacultyInfo).filter_by(faculty_id=current_user.user_id).first()
+def read_users_me(current_user: dict = Depends(get_current_active_user("faculty")), db: Session = Depends(get_db)):
+    faculty = db.query(FacultyInfo).filter_by(faculty_id=current_user["sub"]).first()
     if not faculty:
         raise HTTPException(status_code=404, detail="Faculty profile not found")
     return faculty
@@ -77,7 +80,17 @@ def delete_faculty(faculty_id: str, db: Session = Depends(get_db)):
     if not faculty:
         raise HTTPException(status_code=404, detail="Faculty not found")
 
-    db.query(UserCredentials).filter_by(user_id=faculty_id).delete()
-    db.delete(faculty)
-    db.commit()
-    return {"detail": "Faculty deleted successfully"}
+    try:
+        db.query(AttendanceRecords).filter_by(faculty_id=faculty_id).delete(synchronize_session=False)
+        db.query(MarksRecords).filter_by(faculty_id=faculty_id).delete(synchronize_session=False)
+        db.query(FacultyCourseMap).filter_by(faculty_id=faculty_id).delete(synchronize_session=False)
+        db.query(UserCredentials).filter_by(user_id=faculty_id).delete(synchronize_session=False)
+        db.delete(faculty)
+        db.commit()
+        return {"detail": "Faculty deleted successfully"}
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="Cannot delete faculty because related academic records still exist."
+        )
