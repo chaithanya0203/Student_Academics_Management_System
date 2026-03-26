@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from passlib.context import CryptContext
 
 from app.database import get_db
+from app.core.security import hash_password
 from app.models.user_credentials import UserCredentials
 from app.models.admin_info import AdminInfo
 from app.models.faculty_info import FacultyInfo
@@ -11,7 +11,6 @@ from app.schemas import user_credentials as user_schema
 from app.dependencies import get_current_active_user
 
 router = APIRouter(prefix="/user_credentials", tags=["User Credentials"])
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def ensure_role_record_exists(user_id: str, role: str, db: Session):
@@ -36,7 +35,7 @@ def create_user(user: user_schema.UserCredentialsCreate, db: Session = Depends(g
 
     ensure_role_record_exists(user.user_id, user.role, db)
 
-    hashed_password = pwd_context.hash(user.password)
+    hashed_password = hash_password(user.password)
     db_user = UserCredentials(
         user_id=user.user_id,
         password=hashed_password,
@@ -63,7 +62,7 @@ def update_user(user_id: str, user: user_schema.UserCredentialsCreate, db: Sessi
 
     ensure_role_record_exists(user_id, user.role, db)
     db_user.role = user.role
-    db_user.password = pwd_context.hash(user.password)
+    db_user.password = hash_password(user.password)
 
     db.commit()
     db.refresh(db_user)

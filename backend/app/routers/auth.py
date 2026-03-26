@@ -26,28 +26,6 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
-
-@router.post("/create-test-user")
-def create_test_user(db: Session = Depends(get_db)):
-    from app.core import security
-    from app.models.user_credentials import UserCredentials
-
-    existing = db.query(UserCredentials).filter(UserCredentials.user_id == "10001").first()
-    if existing:
-        return {"message": "Test user already exists"}
-
-    hashed_password = security.hash_password("Admin@123")
-
-    new_user = UserCredentials(
-        user_id="10001",
-        password=hashed_password,
-        role="admin"
-    )
-
-    db.add(new_user)
-    db.commit()
-    return {"message": "✅ Test user created: 10001 / Admin@123"}
-
 class ForgotPasswordRequest(BaseModel):
     user_id: str
     new_password: str

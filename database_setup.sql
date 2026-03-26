@@ -139,7 +139,8 @@ INSERT INTO course_catalog (course_name, credit) VALUES ('Mathematics', 4);
 INSERT INTO course_catalog (course_name, credit) VALUES ('Physics', 3);
 INSERT INTO course_catalog (course_name, credit) VALUES ('Computer Science', 4);
 
--- Admin User (ID: 100190, Password: Admin@123)
+-- Admin User (ID: 100190)
+-- Reset the seeded admin password immediately after import.
 -- Hash generated from bcrypt: $2b$12$X5XFPZGxRd3iSms7Cu.LVuUODXjlTUMGCf868rcEdS2oJL/4Dtpe.
 INSERT INTO user_credentials (user_id, password, role) VALUES ('100190', '$2b$12$X5XFPZGxRd3iSms7Cu.LVuUODXjlTUMGCf868rcEdS2oJL/4Dtpe.', 'admin');
 INSERT INTO admin_info (admin_id, name, email, phone) VALUES ('100190', 'Administrator', 'admin@example.com', '0000000000');

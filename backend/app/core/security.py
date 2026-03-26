@@ -1,10 +1,13 @@
 import bcrypt
+import os
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from typing import Optional
 
 # JWT config
-SECRET_KEY = "Chaithanya"
+SECRET_KEY = os.getenv("JWT_SECRET_KEY") or os.getenv("SECRET_KEY")
+if not SECRET_KEY:
+    raise RuntimeError("JWT_SECRET_KEY is not set. Add it to your environment before starting the backend.")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 

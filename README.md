@@ -13,6 +13,8 @@ Create `backend/.env` from `backend/.env.example` and add your MySQL connection:
 ```env
 DATABASE_URL=mysql+mysqlconnector://USERNAME:PASSWORD@HOST:3306/DATABASE_NAME
 CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
+JWT_SECRET_KEY=replace-with-a-long-random-secret
+DEFAULT_ADMIN_PASSWORD=change-admin-password-before-production
 ```
 
 ### 2. Backend Setup
@@ -60,10 +62,8 @@ The UI will run at `http://localhost:5173`.
 
 ## Default Login Credentials
 
-- **User ID**: `100190`
-- **Password**: `Admin@123`
-
-You may need to create this user first by visiting: `http://127.0.0.1:8000/auth/create-test-user` (POST request).
+- Import `database_setup.sql` to seed the initial admin account.
+- Keep real passwords in your local `passwords.txt`, which is ignored by Git.
 
 ## Deployment
 
@@ -94,6 +94,8 @@ uvicorn app.main:app --host 0.0.0.0 --port $PORT
 ```env
 DATABASE_URL=mysql+mysqlconnector://USERNAME:PASSWORD@HOST:3306/DATABASE_NAME
 CORS_ORIGINS=https://your-frontend-domain.vercel.app
+JWT_SECRET_KEY=replace-with-a-long-random-secret
+DEFAULT_ADMIN_PASSWORD=change-admin-password-before-production
 ```
 
 ### MySQL Database

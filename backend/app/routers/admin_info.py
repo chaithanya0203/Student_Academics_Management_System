@@ -1,10 +1,12 @@
+import os
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.schemas.admin_info import AdminCreate, AdminUpdate, AdminOut
 from app.models.admin_info import AdminInfo
 from app.models.user_credentials import UserCredentials
 from app.database import get_db
-from app.utils.hashing import pwd_context
+from app.core.security import hash_password
 from app.dependencies import get_current_active_user
 
 router = APIRouter(prefix="/admin", tags=["Admin"])
@@ -19,8 +21,8 @@ def create_admin(admin: AdminCreate, db: Session = Depends(get_db)):
     new_admin = AdminInfo(**admin.dict())
     db.add(new_admin)
 
-    default_password = "admin@123"
-    hashed_password = pwd_context.hash(default_password)
+    default_password = os.getenv("DEFAULT_ADMIN_PASSWORD", "ChangeAdminPassword123!")
+    hashed_password = hash_password(default_password)
 
     user = UserCredentials(
         user_id=new_admin.admin_id,

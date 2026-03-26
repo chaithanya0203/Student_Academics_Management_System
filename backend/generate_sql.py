@@ -1,3 +1,4 @@
+import os
 import sys
 from sqlalchemy import create_engine
 from sqlalchemy.dialects import mysql
@@ -70,9 +71,10 @@ def generate_ddl():
         f.write("INSERT INTO course_catalog (course_name, credit) VALUES ('Computer Science', 4);\n")
 
         # Admin User
-        admin_password = "Admin@123"
+        admin_password = os.getenv("SEED_ADMIN_PASSWORD", "ChangeMeBeforeProduction123!")
         hashed = hash_password(admin_password)
-        f.write(f"\n-- Admin User (ID: 100190, Password: {admin_password})\n")
+        f.write("\n-- Admin User (ID: 100190)\n")
+        f.write("-- Set a strong password immediately after import.\n")
         f.write(f"INSERT INTO user_credentials (user_id, password, role) VALUES ('100190', '{hashed}', 'admin');\n")
         f.write(f"INSERT INTO admin_info (admin_id, name, email, phone) VALUES ('100190', 'Administrator', 'admin@example.com', '0000000000');\n")
         
